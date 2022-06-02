@@ -109,14 +109,14 @@ console.log('<-------------------------------------------------------------->>')
       if(!clientObject) return 
 
       const clientCity = clientObject.city
-      citySales[clientCity].salesVolume += 1
+      citySales[clientCity].salesVolume += order.value
     }) 
   
    
 
          Object.entries(citySales).forEach(([cityName,value])=>{
              // display
-           console.log('City:',cityName,'made',value.salesVolume,'sales')
+           console.log('City:',cityName,'sales worth:',value.salesVolume)
         })
       return citySales
 
