@@ -78,9 +78,11 @@ const orders = [
   ];
   
 
-
+  console.log('-------------------------------------------------------------->')
   findSalesVolumeForEachCity(orders,clients)
-
+console.log('<-------------------------------------------------------------->>')
+  findClientsthatMeetSaleStandard(2,40,clients,orders)
+  console.log('<--------------------------------------------------------------')
   function findSalesVolumeForEachCity(orders,clients){
      
     const citySales = {}
@@ -110,12 +112,54 @@ const orders = [
       citySales[clientCity].salesVolume += 1
     }) 
   
-    console.log('city sales' ,citySales)
+   
 
-        return Object.entries(citySales).forEach(([cityName,value])=>{
+         Object.entries(citySales).forEach(([cityName,value])=>{
+             // display
            console.log('City:',cityName,'made',value.salesVolume,'sales')
         })
+      return citySales
+
+  }
+
+  function findClientsthatMeetSaleStandard(numberOfOrders,minimSpendedSum,clients,orders){
+    
+    const fitClients = {}
+
+
+  
+     for(let index = 0;index < orders.length;index++ ){
+        
+          const orderObject = orders[index]
+        
+          const clientId = orderObject.client_id
+          const clientObject = clients.find((client)=>clientId === client.id)
+       
+          if(!clientObject) continue
       
+          if(fitClients[clientObject.name]){ 
+
+             fitClients[clientObject.name].orders += 1
+             fitClients[clientObject.name].totalSpent +=orderObject.value
+
+             continue
+          }
+
+          fitClients[clientObject.name] = {orders:1,totalSpent:orderObject.value}
+
+     } 
+
+     Object.entries(fitClients).forEach(([clientName,clientValue])=>{
+       // display
+        if(clientValue.orders >= numberOfOrders && clientValue.totalSpent >= minimSpendedSum){
+            console.log(`Client ${clientName} has spent ${minimSpendedSum} with at least ${numberOfOrders} orders(${clientValue.orders})`)
+        }
+     })
+
+     
+  
+     return fitClients
+  
 
   }
   
